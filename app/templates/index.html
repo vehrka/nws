@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block main %}
+<h1 id="">¡Hola, {% if name %}{{ name }}{% else %}desconocido{% endif %}!</h1>
+{% if form %}
+{{ wtf.quick_form(form) }}</br>
+    {% if posts %}
+        {% for post in posts %}
+        <div class="panel panel-default">
+            <div class="panel-heading">{{ post['title'] }}</div>
+            <div class="panel-body"> {{ post['content'] }} </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endif %}
+{% endblock %}
