@@ -34,4 +34,29 @@ What do I want:
 
   * A player can be assigned to a side or to one or several ships and have
     limited information
-  
+
+Install
+=======
+
+Clone the repository::
+
+    $ git clone https://github.com/vehrka/nws.git
+    $ cd nws
+
+Create the virtual environment::
+
+    $ mkvirtualenv -r requirements.txt nws
+
+Create the configuration file::
+
+    $ cp config/example.cfg config prod.cfg
+
+Modify the contents to match your system.
+
+Install *javascript* dependencies::
+
+    $ bower install
+
+Fire the server::
+
+    $ fab runprod
