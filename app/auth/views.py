@@ -9,7 +9,7 @@ from .forms import LoginForm
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        user = TUser.query.filter_by(use_useremail=form.email.data).first()
+        user = TUser.query.filter_by(mail=form.email.data).first()
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)
             return redirect(request.args.get('next') or url_for('main.index'))
