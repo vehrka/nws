@@ -3,10 +3,11 @@
 {% block title %}NWS - Naval Warfare Simulator {% endblock %}
 {% block head %}
 {{ super() }}
-        <link href="static/lib/bootswatch/superhero/bootstrap.min.css" rel="stylesheet">
+<link href="{{ url_for('static', filename='lib/bootswatch/superhero/bootstrap.min.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% block navbar %}
+    <div class="container">
         <header id="top" role="banner">
             <nav class="navbar navbar-default" role="navigation">
                 <div class="container-fluid">
@@ -34,6 +35,7 @@
                 </div><!--/.container-fluid -->
             </nav>
         </header>
+    </div>
 {% endblock %}
 
 
