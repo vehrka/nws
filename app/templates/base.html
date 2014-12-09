@@ -1,30 +1,11 @@
-<!DOCTYPE html>
-<html lang="es">
-    <head>
+{% extends "bootstrap/base.html" %}
+
+{% block title %}NWS - Naval Warfare Simulator {% endblock %}
 {% block head %}
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        {% if title %}
-        <title>{{ title }}</title>
-        {% else %}
-        <title>Naval Warfare Simulator</title>
-        {% endif %}
-
-        <!-- Bootstrap -->
-        <!--<link href="static/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">-->
+{{ super() }}
         <link href="static/lib/bootswatch/superhero/bootstrap.min.css" rel="stylesheet">
-
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
 {% endblock %}
-    </head>
-    <body>
-     <div class="container">
+
 {% block navbar %}
         <header id="top" role="banner">
             <nav class="navbar navbar-default" role="navigation">
@@ -42,33 +23,38 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="{{ url_for('main.index') }}">Inicio</a></li>
                     </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if current_user.is_authenticated() %}
+                        <li><a href='{{ url_for('auth.logout') }}'>Sign Out</a></li>
+                        {% else %}
+                        <li><a href='{{ url_for('auth.login') }}'>Sign In</a>
+                        {% endif %}
+                    </ul>
                     </div><!--/.nav-collapse -->
                 </div><!--/.container-fluid -->
             </nav>
         </header>
 {% endblock %}
-{% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        {{ message }}
-    </div>
-{% endfor %}
+
+
 {% block content %}
-        <div class="row">
-            <div class="col-md-2">
-                {% block lateral %}{% endblock %}
-            </div>
-            <div class="col-md-10">
-                {% block main %}{% endblock %}
-            </div>
+    <div class="container">
+
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{ message }}
         </div>
+    {% endfor %}
+
+    {% block page_content %}
+    {% endblock %}
+</div>
 {% endblock %}
-     </div><!-- container -->
+
 {% block scripts %}
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="static/lib/jquery/dist/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="static/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 {% endblock %}
-    </body>
-</html>
