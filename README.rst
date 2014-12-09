@@ -1,4 +1,9 @@
-This is a Simulator for Naval Warfare
+=======================
+Naval Warfare Simulator
+=======================
+
+Intro
+=====
 
 The idea is to assist in the playing of the Command at Sea wargame from Clash
 of Arms.
