@@ -59,3 +59,4 @@ config/dev.cfg
 dbmodels/models.py
 fib
 tmp/
+*.sqlite
