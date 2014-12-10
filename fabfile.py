@@ -22,6 +22,13 @@ def shelldev():
 
 
 @task
+def dbcmm(cmmd):
+    """Sets the dev environment and gives the command to Migrate"""
+    confpth = os.path.join(DIR, 'config/dev.cfg')
+    dbrun(confpth, cmmd)
+
+
+@task
 def runprod():
     """Sets the production environment and launches the app"""
     confpth = os.path.join(DIR, 'config/prod.cfg')
@@ -36,6 +43,11 @@ def apprun(confpth):
 def shellrun(confpth):
     with prefix('export SNWSETTINGS={0}'.format(confpth)):
         local('python manage.py shell')
+
+
+def dbrun(confpth, cmnd):
+    with prefix('export SNWSETTINGS={0}'.format(confpth)):
+        local('python manage.py db {}'.format(cmnd))
 
 
 @task
