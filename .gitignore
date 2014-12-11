@@ -60,3 +60,4 @@ dbmodels/models.py
 fib
 tmp/
 *.sqlite
+tests/

@@ -8,10 +8,24 @@ DIR = os.path.abspath(os.path.dirname(__file__))
 
 
 @task
+def test():
+    """Runs the unittests"""
+    local('python manage.py test')
+
+
+@task
 def rundev():
     """Sets the dev environment and launches the app"""
     confpth = os.path.join(DIR, 'config/dev.cfg')
     with prefix('export FLASK_CONFIG=development'):
+        apprun(confpth)
+
+
+@task
+def runprod():
+    """Sets the production environment and launches the app"""
+    confpth = os.path.join(DIR, 'config/prod.cfg')
+    with prefix('export FLASK_CONFIG=production'):
         apprun(confpth)
 
 
@@ -29,14 +43,6 @@ def dbcmm(cmmd):
     confpth = os.path.join(DIR, 'config/dev.cfg')
     with prefix('export FLASK_CONFIG=development'):
         dbrun(confpth, cmmd)
-
-
-@task
-def runprod():
-    """Sets the production environment and launches the app"""
-    confpth = os.path.join(DIR, 'config/prod.cfg')
-    with prefix('export FLASK_CONFIG=production'):
-        apprun(confpth)
 
 
 def apprun(confpth):
