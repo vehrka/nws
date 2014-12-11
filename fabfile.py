@@ -61,7 +61,7 @@ def dbrun(confpth, cmnd):
 
 
 @task
-def gendb():
+def genmoddb():
     """Generates the models from the diagram"""
     with lcd('dbmodels'):
         local("parsediasql uml --file dbmodels.dia --db 'sqlite3' > dbmodels_sqlite3.sql")

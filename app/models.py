@@ -13,7 +13,19 @@ class Approle(db.Model):
     roluser = db.relationship('RArousr', backref='a_approle')
 
     def __repr__(self):
-        return '<Rol {}>'.format(self.apr_desc)
+        return '<Rol {}>'.format(self.desc)
+
+
+class Side(db.Model):
+    __tablename__ = 'a_sides'
+
+    id = db.Column(db.Integer, primary_key=True)
+    desc = db.Column(db.String(75))
+
+    sideplay = db.relationship('Player', backref='a_sides')
+
+    def __repr__(self):
+        return '<Side {}>'.format(self.desc)
 
 
 class RArousr(db.Model):
@@ -22,6 +34,33 @@ class RArousr(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     capr = db.Column(db.Integer, db.ForeignKey('a_approle.id'))
     cuse = db.Column(db.Integer, db.ForeignKey('t_users.id'))
+
+
+class Game(db.Model):
+    __tablename__ = 't_games'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    desc = db.Column(db.Text)
+    date = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
+    finished = db.Column(db.Boolean)
+
+    gameplay = db.relationship('Player', backref='t_games')
+
+    def __repr__(self):
+        return '<Game {}>'.format(self.name)
+
+
+class Player(db.Model):
+    __tablename__ = 't_players'
+    __table_args__ = (
+        db.Index('idx_usergame', 'cuse', 'cgam', unique=True),
+    )
+
+    id = db.Column(db.Integer, primary_key=True)
+    cgam = db.Column(db.Integer)
+    cuse = db.Column(db.Integer)
+    csid = db.Column(db.Integer)
 
 
 class User(UserMixin, db.Model):
@@ -33,6 +72,7 @@ class User(UserMixin, db.Model):
     passwdhash = db.Column(db.String(128))
 
     userrol = db.relationship('RArousr', backref='t_users')
+    userplay = db.relationship('Player', backref='t_users')
 
     def __repr__(self):
         return '<User {}>'.format(self.name)
