@@ -11,28 +11,32 @@ DIR = os.path.abspath(os.path.dirname(__file__))
 def rundev():
     """Sets the dev environment and launches the app"""
     confpth = os.path.join(DIR, 'config/dev.cfg')
-    apprun(confpth)
+    with prefix('export FLASK_CONFIG=development'):
+        apprun(confpth)
 
 
 @task
 def shelldev():
     """Sets the dev environment and launches the shell"""
     confpth = os.path.join(DIR, 'config/dev.cfg')
-    shellrun(confpth)
+    with prefix('export FLASK_CONFIG=development'):
+        shellrun(confpth)
 
 
 @task
 def dbcmm(cmmd):
     """Sets the dev environment and gives the command to Migrate"""
     confpth = os.path.join(DIR, 'config/dev.cfg')
-    dbrun(confpth, cmmd)
+    with prefix('export FLASK_CONFIG=development'):
+        dbrun(confpth, cmmd)
 
 
 @task
 def runprod():
     """Sets the production environment and launches the app"""
     confpth = os.path.join(DIR, 'config/prod.cfg')
-    apprun(confpth)
+    with prefix('export FLASK_CONFIG=production'):
+        apprun(confpth)
 
 
 def apprun(confpth):
