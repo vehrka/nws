@@ -55,5 +55,8 @@ target/
 app/static/lib/
 config/prod.cfg
 config/test.cfg
-tmp/
+config/dev.cfg
+dbmodels/models.py
 fib
+tmp/
+*.sqlite

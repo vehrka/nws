@@ -1,0 +1,9 @@
+Sobre Migrate
+
+Teniendo el modelo definido, se borra la base de datos.
+
+Se corre 'db init' lo que creará la BD vacía
+Se corre 'db migrate -m "msg"' lo que preparará el script a ejecutar
+Se corre 'db upgrade' lo que aplicará los cambios
+
+Cuando se cambie el modelo, se ejecuta 'db migrate -m "msg"' see revisa y luego 'db upgrade'

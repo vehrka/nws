@@ -1,4 +1,9 @@
-This is a Simulator for Naval Warfare
+=======================
+Naval Warfare Simulator
+=======================
+
+Intro
+=====
 
 The idea is to assist in the playing of the Command at Sea wargame from Clash
 of Arms.
@@ -34,4 +39,32 @@ What do I want:
 
   * A player can be assigned to a side or to one or several ships and have
     limited information
-  
+
+Install
+=======
+
+Clone the repository::
+
+    $ git clone https://github.com/vehrka/nws.git
+    $ cd nws
+
+Create the virtual environment::
+
+    $ mkvirtualenv -r requirements.txt nws
+    $ workon nws
+
+Create the configuration file::
+
+    $ cp config/example.cfg config/prod.cfg
+
+Modify the contents to match your system.
+
+Install *javascript* dependencies::
+
+    $ bower install
+
+And fire the server (yup, the project is made in Python3 but uses Fabric which
+is for Python 2.7 ... Fabric and Python2.7 should be installed in the system
+beforehand)::
+
+    $ fab runprod

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block page_content %}
+        <div class="row">
+            <div class="col-md-2">
+                {% block lateral %}{% endblock %}
+            </div>
+            <div class="col-md-10">
+                <h1 id="">¡Hola, {% if current_user.is_authenticated() %}{{ current_user.name }}{% else %}desconocido{% endif %}!</h1>
+                {% if form %}
+                {{ wtf.quick_form(form) }}</br>
+                    {% if posts %}
+                        {% for post in posts %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">{{ post['title'] }}</div>
+                            <div class="panel-body"> {{ post['content'] }} </div>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+{% endblock %}
