@@ -1,6 +1,6 @@
 {% extends "bootstrap/base.html" %}
 
-{% block title %}NWS - Naval Warfare Simulator {% endblock %}
+{% block title %}Web APP - The web app made in Flask{% endblock %}
 {% block head %}
 {{ super() }}
 <link href="{{ url_for('static', filename='lib/bootswatch/superhero/bootstrap.min.css') }}" rel="stylesheet">
@@ -18,7 +18,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="{{ url_for('main.index') }}">NWS</a>
+                        <a class="navbar-brand" href="{{ url_for('main.index') }}">Web App</a>
                     </div>
                     <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">

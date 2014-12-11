@@ -6,7 +6,7 @@
                 {% block lateral %}{% endblock %}
             </div>
             <div class="col-md-10">
-                <h1 id="">¡Hola, {% if name %}{{ name }}{% else %}desconocido{% endif %}!</h1>
+                <h1 id="">¡Hola, {% if current_user.is_authenticated() %}{{ current_user.name }}{% else %}desconocido{% endif %}!</h1>
                 {% if form %}
                 {{ wtf.quick_form(form) }}</br>
                     {% if posts %}
