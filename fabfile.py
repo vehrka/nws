@@ -67,4 +67,5 @@ def genmoddb():
         local("parsediasql uml --file dbmodels.dia --db 'sqlite3' > dbmodels_sqlite3.sql")
         local('sqlite3 dbmodels.db < dbmodels_sqlite3.sql')
         local('sqlacodegen sqlite:///dbmodels.db > models.py')
+        local('sed -i -f sedcmd.txt models.py')
         local('rm dbmodels_sqlite3.sql dbmodels.db')

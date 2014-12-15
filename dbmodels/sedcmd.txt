@@ -1,0 +1,8 @@
+s/(Base)/(db.Model)/
+s/ Column/ db.Column/
+s/Integer/db.Integer/
+s/String/db.String/
+s/Text/db.Text/
+s/Boolean/db.Boolean/
+s/DateTime/db.DateTime/
+s/^class [A-Z]/class /
