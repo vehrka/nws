@@ -36,6 +36,47 @@ class RArousr(db.Model):
     cuse = db.Column(db.Integer, db.ForeignKey('t_users.id'))
 
 
+class ShpClass(db.Model):
+    __tablename__ = 't_shpclasses'
+
+    id = db.Column(db.Integer, primary_key=True)
+    desc = db.Column(db.String(100))
+
+    clacoun = db.relationship('Counter', backref='t_shpclasses')
+    clahcoun = db.relationship('HCounter', backref='t_shpclasses')
+
+    def __repr__(self):
+        return '<Counter Class {}>'.format(self.desc)
+
+
+class Counter(db.Model):
+    __tablename__ = 't_counters'
+
+    id = db.Column(db.Integer, primary_key=True)
+    cclas = db.Column(db.Integer, db.ForeignKey('t_shpclasses.id'))
+    name = db.Column(db.String(100))
+    bearing = db.Column(db.Integer)
+    speed = db.Column(db.Integer)
+    height = db.Column(db.Integer)
+    detected = db.Column(db.Boolean)
+    lat = db.Column(db.Integer)
+    lon = db.Column(db.Integer)
+
+    counform = db.relationship('Formation', backref='t_formations')
+    counhist = db.relationship('HCounter', backref='t_h_counter')
+
+    def __repr__(self):
+        return '<Counter {}>'.format(self.name)
+
+
+class Formation(db.Model):
+    __tablename__ = 't_formations'
+
+    id = db.Column(db.Integer, primary_key=True)
+    cplay = db.Column(db.Integer, db.ForeignKey('t_players.id'))
+    ccou = db.Column(db.Integer, db.ForeignKey('t_counters.id'))
+
+
 class Game(db.Model):
     __tablename__ = 't_games'
 
@@ -46,9 +87,26 @@ class Game(db.Model):
     finished = db.Column(db.Boolean)
 
     gameplay = db.relationship('Player', backref='t_games')
+    gameturn = db.relationship('Turn', backref='t_games')
 
     def __repr__(self):
         return '<Game {}>'.format(self.name)
+
+
+class HCounter(db.Model):
+    __tablename__ = 't_h_counter'
+
+    id = db.Column(db.Integer, primary_key=True)
+    cclas = db.Column(db.Integer, db.ForeignKey('t_shpclasses.id'))
+    ccou = db.Column(db.Integer, db.ForeignKey('t_counters.id'))
+    name = db.Column(db.String(100))
+    bearing = db.Column(db.Integer)
+    speed = db.Column(db.Integer)
+    height = db.Column(db.Integer)
+    detected = db.Column(db.Boolean)
+    cturn = db.Column(db.Integer, db.ForeignKey('t_turns.id'))
+    lat = db.Column(db.Integer)
+    lon = db.Column(db.Integer)
 
 
 class Player(db.Model):
@@ -61,6 +119,17 @@ class Player(db.Model):
     cgam = db.Column(db.Integer)
     cuse = db.Column(db.Integer)
     csid = db.Column(db.Integer)
+
+
+class Turn(db.Model):
+    __tablename__ = 't_turns'
+
+    id = db.Column(db.Integer, primary_key=True)
+    cgam = db.Column(db.Integer, db.ForeignKey('t_games.id'))
+    cturn = db.Column(db.Integer)
+    name = db.Column(db.String(100))
+
+    thcoun = db.relationship('HCounter', backref='t_turns')
 
 
 class User(UserMixin, db.Model):
