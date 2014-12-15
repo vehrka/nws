@@ -116,9 +116,9 @@ class Player(db.Model):
     )
 
     id = db.Column(db.Integer, primary_key=True)
-    cgam = db.Column(db.Integer)
-    cuse = db.Column(db.Integer)
-    csid = db.Column(db.Integer)
+    cgam = db.Column(db.Integer, db.ForeignKey('t_games.id'))
+    cuse = db.Column(db.Integer, db.ForeignKey('t_users.id'))
+    csid = db.Column(db.Integer, db.ForeignKey('a_sides.id'))
 
 
 class Turn(db.Model):
@@ -156,6 +156,12 @@ class User(UserMixin, db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.passwdhash, password)
+
+    def is_admin(self):
+        if RArousr.query.filter_by(cuse=self.id, capr=Approle.query.filter_by(desc='admin').first().id).first():
+            return True
+        else:
+            return False
 
 
 @login_manager.user_loader
