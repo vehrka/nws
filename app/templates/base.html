@@ -26,9 +26,12 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         {% if current_user.is_authenticated() %}
-                        <li><a href='{{ url_for('auth.logout') }}'>Sign Out</a></li>
+                            {% if current_user.is_admin() %}
+                                <li><a href='{{ url_for('main.admin') }}'>Admin</a></li>
+                            {% endif %}
+                            <li><a href='{{ url_for('auth.logout') }}'>Sign Out</a></li>
                         {% else %}
-                        <li><a href='{{ url_for('auth.login') }}'>Sign In</a>
+                            <li><a href='{{ url_for('auth.login') }}'>Sign In</a>
                         {% endif %}
                     </ul>
                     </div><!--/.nav-collapse -->
