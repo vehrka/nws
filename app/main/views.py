@@ -13,4 +13,5 @@ def index():
 @login_required
 @admin_required
 def admin():
-    return render_template('admin.html')
+    parent = 'admin'
+    return render_template('admin.html', parent=parent)

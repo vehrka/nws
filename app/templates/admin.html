@@ -1,14 +1,30 @@
 {% extends "base.html" %}
 {% block page_content %}
         <div class="page-header">
-            <h1 id="">Interfaz administrativa</h1>
+            <h1 id="">Admin interface</h1>
         </div>
         <div class="row">
             <div class="col-md-2">
-                {% block lateral %}{% endblock %}
+                {% block lateral %}
+                <div class="panel panel-primary">
+                    <div class="list-group">
+                        <a href="" class="list-group-item {% if parent == 'admin'  %} active {% endif %}">Admin</a>
+                        <a href="" class="list-group-item {% if parent == 'users'  %} active {% endif %}">Manage Users</a>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="list-group">
+                        <a href="" class="list-group-item {% if parent == 'games'  %} active {% endif %}">Games</a>
+                        <a href="" class="list-group-item {% if parent == 'players'  %} active {% endif %}">Players</a>
+                        <a href="" class="list-group-item {% if parent == 'sides'  %} active {% endif %}">Sides</a>
+                    </div>
+                </div>
+                {% endblock %}
             </div>
             <div class="col-md-10">
+                {% block principal %}
                 Still nothing to show
+                {% endblock %}
             </div>
         </div>
 {% endblock %}
