@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% set latbar1 = [(url_for('.admin') , 'admin', 'Admin'), 
+                  (url_for('.users'), 'users', 'Manage Users')] %}
+{% set latbar2 = [(url_for('.games'), 'games', 'Games'),
+                  (url_for('.players'), 'players', 'Players'),
+                  (url_for('.sides'), 'sides', 'Sides')] %}
+{% set active_page = active_page|default('admin') %}
+{% block page_content %}
+        <div class="page-header">
+            <h1 id="">Admin interface</h1>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                {% block lateral %}
+                <div class="panel panel-primary">
+                    <div class="list-group">
+                        {% for href, id, caption in latbar1 %}
+                        <a href="{{ href }}" class="list-group-item {% if id == active_page  %} active {% endif %}">{{ caption }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="list-group">
+                        {% for href, id, caption in latbar2 %}
+                        <a href="{{ href }}" class="list-group-item {% if id == active_page  %} active {% endif %}">{{ caption }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endblock %}
+            </div>
+            <div class="col-md-10">
+                {% block principal %}
+                Still nothing to show
+                {% endblock %}
+            </div>
+        </div>
+{% endblock %}
