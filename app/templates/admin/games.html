@@ -1,5 +1,58 @@
 {% extends "admin/admin.html"%}
 {% set active_page = 'admin.games' %}
 {% block principal %}
-For games admin
+<div role="tabpanel">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#activos" aria-controls="activos" role="tab" data-toggle="tab">Active</a>
+        </li>
+        <li role="presentation">
+            <a href="#finalizados" aria-controls="finalizados" role="tab" data-toggle="tab">Finished</a>
+        </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="activos">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for gact in active_games %}
+                    <tr>
+                        <td>{{ gact.name }}</td>
+                        <td>{{ gact.date }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="finalizados">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for gfin in finished_games %}
+                    <tr>
+                        <td>{{ gfin.name }}</td>
+                        <td>{{ gfin.date }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+</script>
 {% endblock %}
