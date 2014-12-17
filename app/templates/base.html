@@ -1,4 +1,5 @@
 {% extends "bootstrap/base.html" %}
+{% set active_page = active_page|default('home') %}
 
 {% block title %}Web APP - The web app made in Flask{% endblock %}
 {% block head %}
@@ -22,16 +23,16 @@
                     </div>
                     <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="{{ url_for('main.index') }}">Inicio</a></li>
+                        <li class="{% if active_page == 'home' %}active{% endif %}"><a href="{{ url_for('main.index') }}">Inicio</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         {% if current_user.is_authenticated() %}
                             {% if current_user.is_admin() %}
-                            <li><a href='{{ url_for('admin.admin') }}'>Admin</a></li>
+                            <li class="{% if active_page[:5] == 'admin' %}active{% endif %}"><a href='{{ url_for('admin.admin') }}'>Admin</a></li>
                             {% endif %}
                             <li><a href='{{ url_for('auth.logout') }}'>Sign Out</a></li>
                         {% else %}
-                            <li><a href='{{ url_for('auth.login') }}'>Sign In</a>
+                        <li class="{% if active_page == 'login' %}active{% endif %}"><a href='{{ url_for('auth.login') }}'>Sign In</a>
                         {% endif %}
                     </ul>
                     </div><!--/.nav-collapse -->
