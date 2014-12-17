@@ -1,8 +1,9 @@
-from flask import render_template
+from flask import flash, redirect, render_template, url_for
 from flask.ext.login import login_required
 from ..models import Game
 from ..decorators import admin_required
 from . import admin_blueprint
+from .forms import GameForm
 
 
 #@admin_blueprint.route('/')
@@ -24,13 +25,17 @@ def users():
     return render_template('admin/users.html')
 
 
-@admin_blueprint.route('/games')
+@admin_blueprint.route('/games', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def games():
+    form = GameForm()
+    if form.validate_on_submit():
+        flash('The game has been added')
+        return redirect(url_for('.games'))
     active_games = Game.query.filter_by(finished=False)
     finished_games = Game.query.filter_by(finished=True)
-    return render_template('admin/games.html', active_games=active_games, finished_games=finished_games)
+    return render_template('admin/games.html', form=form, active_games=active_games, finished_games=finished_games)
 
 
 @admin_blueprint.route('/sides')
