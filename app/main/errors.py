@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request, jsonify
 from . import main_blueprint
 
 
@@ -6,8 +6,13 @@ from . import main_blueprint
 def page_forbidden(e):
     return render_template('403.html'), 403
 
+
 @main_blueprint.app_errorhandler(404)
 def page_not_found(e):
+    if request.accept_mimetypes.accept_json and not request.accept_mimetypes.accept_html:
+        response = jsonify({'error': 'not found'})
+        response.status_code = 404
+        return response
     return render_template('404.html'), 404
 
 

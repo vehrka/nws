@@ -1,5 +1,6 @@
 # coding: utf-8
 from . import db, login_manager
+from flask import url_for
 from flask.ext.login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -232,6 +233,11 @@ class User(UserMixin, db.Model):
             return True
         else:
             return False
+
+    def to_json(self):
+        json_user = {'url': url_for('api.get_user', id=self.id, _external=True),
+                     'username': self.name}
+        return json_user
 
 
 @login_manager.user_loader

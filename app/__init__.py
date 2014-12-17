@@ -26,6 +26,9 @@ def create_app(config_name):
     from .admin import admin_blueprint
     app.register_blueprint(admin_blueprint, url_prefix='/admin')
 
+    from .api_1_0 import api_1_0_blueprint as api
+    app.register_blueprint(api, url_prefix='/api/v1.0')
+
     bootstrap.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
