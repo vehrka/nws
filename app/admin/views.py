@@ -1,14 +1,16 @@
 from flask import flash, redirect, render_template, url_for
 from flask.ext.login import login_required
-from ..models import Game
+from ..models import Game, User
 from ..decorators import admin_required
 from . import admin_blueprint
 from .forms import GameForm
 
 
-#@admin_blueprint.route('/')
-#def index():
-    #return render_template('index.html')
+def populate_players_field(form):
+    """Populate the SelectField form the database
+    https://github.com/rawrgulmuffins/WTFormMultipleSelectTutorial/blob/master/multiple_select.py"""
+    users_choices = [(u.id, u.name) for u in User.query.all()]
+    form.players.choices = users_choices
 
 
 @admin_blueprint.route('/')
@@ -30,7 +32,11 @@ def users():
 @admin_required
 def games():
     form = GameForm()
+    populate_players_field(form)
     if form.validate_on_submit():
+        name = form.name.data
+        desc = form.desc.data
+        players = form.players.data
         flash('The game has been added')
         return redirect(url_for('.games'))
     active_games = Game.query.filter_by(finished=False)
