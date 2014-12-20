@@ -51,6 +51,21 @@ def games():
     return render_template('admin/games.html', form=form, active_games=active_games, finished_games=finished_games)
 
 
+@admin_blueprint.route('/game/<int:id>')
+@login_required
+@admin_required
+def game(id):
+    game = Game.query.get(id)
+    players = game.gameplay.all()
+    sides = {}
+    for player in players:
+        try:
+            sides[player.plasid.acro].append(player.plausr.name)
+        except:
+            sides[player.plasid.acro] = [player.plausr.name]
+    return render_template('admin/game.html', game=game, sides=sides)
+
+
 @admin_blueprint.route('/sides')
 @login_required
 @admin_required

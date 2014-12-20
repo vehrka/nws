@@ -1,0 +1,22 @@
+{% extends "admin/admin.html"%}
+{% set active_page = 'admin.games' %}
+{% block principal %}
+<div class="page-header">
+    <h1>{{ game.name }} <small>{{ game.date }}</small></h1>
+  </div>
+  <div class="well">{{ game.desc }}</div>
+  {% for side in sides %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ side }}</h3>
+        </div>
+        <div class="panel-body">
+            <ul>
+            {% for player in sides[side] %}
+            <li>{{ player }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+  {% endfor %}
+{% endblock %}

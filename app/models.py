@@ -123,22 +123,6 @@ class Formation(db.Model):
     ccou = db.Column(db.Integer, db.ForeignKey('t_counters.id'))
 
 
-class Game(db.Model):
-    __tablename__ = 't_games'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255))
-    desc = db.Column(db.Text)
-    date = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
-    finished = db.Column(db.Boolean, default=False)
-
-    gameplay = db.relationship('Player', backref='t_games')
-    gameturn = db.relationship('Turn', backref='t_games')
-
-    def __repr__(self):
-        return '<Game {}:{}>'.format(self.id, self.name)
-
-
 class HCounter(db.Model):
     __tablename__ = 't_h_counter'
 
@@ -177,6 +161,9 @@ class Player(db.Model):
     cuse = db.Column(db.Integer, db.ForeignKey('t_users.id'))
     csid = db.Column(db.Integer, db.ForeignKey('a_sides.id'))
 
+    plausr = db.relationship('User', backref='t_players')
+    plasid = db.relationship('Side', backref='t_players')
+
 
 class Approle(db.Model):
     __tablename__ = 'a_approle'
@@ -200,6 +187,22 @@ class Approle(db.Model):
 
     def __repr__(self):
         return '<Rol {}>'.format(self.desc)
+
+
+class Game(db.Model):
+    __tablename__ = 't_games'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255))
+    desc = db.Column(db.Text)
+    date = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
+    finished = db.Column(db.Boolean, default=False)
+
+    gameplay = db.relationship('Player', foreign_keys=[Player.cgam], backref=db.backref('t_games', lazy='joined'), lazy='dynamic')
+    gameturn = db.relationship('Turn', backref='t_games')
+
+    def __repr__(self):
+        return '<Game {}:{}>'.format(self.id, self.name)
 
 
 class User(UserMixin, db.Model):
