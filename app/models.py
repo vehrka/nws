@@ -130,13 +130,13 @@ class Game(db.Model):
     name = db.Column(db.String(255))
     desc = db.Column(db.Text)
     date = db.Column(db.DateTime, server_default=db.text("CURRENT_TIMESTAMP"))
-    finished = db.Column(db.Boolean)
+    finished = db.Column(db.Boolean, default=False)
 
     gameplay = db.relationship('Player', backref='t_games')
     gameturn = db.relationship('Turn', backref='t_games')
 
     def __repr__(self):
-        return '<Game {}>'.format(self.name)
+        return '<Game {}:{}>'.format(self.id, self.name)
 
 
 class HCounter(db.Model):
