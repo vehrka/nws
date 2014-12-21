@@ -13,7 +13,7 @@
         <div class="panel-body">
             <ul>
             {% for player in sides[side] %}
-            <li>{{ player }}</li>
+            <li><a href="{{ url_for('admin.playerside', id=player.id)  }}">{{ player.name }}</a></li>
             {% endfor %}
             </ul>
         </div>

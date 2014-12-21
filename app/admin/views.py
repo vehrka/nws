@@ -7,6 +7,10 @@ from . import admin_blueprint
 from .forms import GameForm
 
 
+class aPlayer():
+    pass
+
+
 def populate_players_field(form):
     """Populate the SelectField form the database
     https://github.com/rawrgulmuffins/WTFormMultipleSelectTutorial/blob/master/multiple_select.py"""
@@ -55,14 +59,21 @@ def games():
 @login_required
 @admin_required
 def game(id):
-    game = Game.query.get(id)
-    players = game.gameplay.all()
+    ogame = Game.query.get(id)
+    oplayers = ogame.gameplay.all()
     sides = {}
-    for player in players:
-        try:
-            sides[player.plasid.acro].append(player.plausr.name)
-        except:
-            sides[player.plasid.acro] = [player.plausr.name]
+    for oplayer in oplayers:
+        player = aPlayer()
+        if oplayer.plasid:
+            acro = oplayer.plasid.acro
+        else:
+            acro = 'Unassigned'
+        player.name = oplayer.plausr.name
+        player.id = oplayer.cuse
+        if acro in sides.keys():
+            sides[acro].append(player)
+        else:
+            sides[acro] = [player]
     return render_template('admin/game.html', game=game, sides=sides)
 
 

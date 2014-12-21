@@ -18,7 +18,7 @@
     <!-- Tab panes -->
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane active" id="activos">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -27,7 +27,7 @@
                 </thead>
                 <tbody>
                 {% for gact in active_games %}
-                    <tr>
+                <tr class='clickableRow' href='{{ url_for(".game", id=gact.id) }}'>
                         <td>{{ gact.name }}</td>
                         <td>{{ gact.date }}</td>
                     </tr>
@@ -36,7 +36,7 @@
             </table>
         </div>
         <div role="tabpanel" class="tab-pane" id="finalizados">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-striped table-hover">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -61,5 +61,7 @@
 {% endblock %}
 {% block scripts %}
 {{ super() }}
+<script>
+    jQuery(document).ready(function($) { $(".clickableRow").click(function() { window.document.location = $(this).attr("href"); }); });
 </script>
 {% endblock %}
