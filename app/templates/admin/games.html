@@ -45,10 +45,10 @@
                 </thead>
                 <tbody>
                 {% for gfin in finished_games %}
-                    <tr>
-                        <td>{{ gfin.name }}</td>
-                        <td>{{ gfin.date }}</td>
-                    </tr>
+                <tr class='clickableRow' href='{{ url_for(".game", id=gfin.id) }}'>
+                    <td>{{ gfin.name }}</td>
+                    <td>{{ gfin.date }}</td>
+                </tr>
                 {% endfor %}
                 </tbody>
             </table>

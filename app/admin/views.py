@@ -1,14 +1,10 @@
 from flask import flash, redirect, render_template, url_for
 from flask.ext.login import login_required
 from .. import db
-from ..models import Game, Player, User
+from ..models import Game, Player, Side, User
 from ..decorators import admin_required
 from . import admin_blueprint
-from .forms import GameForm, EndGameForm
-
-
-class aPlayer():
-    pass
+from .forms import AssignSideForm, GameForm, EndGameForm
 
 
 def populate_players_field(form):
@@ -16,6 +12,13 @@ def populate_players_field(form):
     https://github.com/rawrgulmuffins/WTFormMultipleSelectTutorial/blob/master/multiple_select.py"""
     users_choices = [(u.id, u.name) for u in User.query.all()]
     form.players.choices = users_choices
+
+
+def populate_sides_field(form):
+    """Populate the SelectField form the database
+    https://github.com/rawrgulmuffins/WTFormMultipleSelectTutorial/blob/master/multiple_select.py"""
+    sides_choices = [(s.id, '{} {}'.format(s.acro, s.desc)) for s in Side.query.all()]
+    form.sides.choices = sides_choices
 
 
 @admin_blueprint.route('/')
@@ -64,21 +67,21 @@ def game(id):
     form = EndGameForm()
     if form.validate_on_submit():
         end = form.endme.data
+        if end:
+            ogame.finished = True
+            db.session.commit()
         flash('The game has been finished')
         return redirect(url_for('.game', id=id))
     sides = {}
     for oplayer in oplayers:
-        player = aPlayer()
         if oplayer.plasid:
             acro = oplayer.plasid.acro
         else:
             acro = 'Unassigned'
-        player.name = oplayer.plausr.name
-        player.id = oplayer.id
         if acro in sides.keys():
-            sides[acro].append(player)
+            sides[acro].append(oplayer)
         else:
-            sides[acro] = [player]
+            sides[acro] = [oplayer]
     return render_template('admin/game.html', form=form,  game=ogame, sides=sides)
 
 
@@ -89,8 +92,20 @@ def sides():
     return render_template('admin/sides.html')
 
 
-@admin_blueprint.route('/player/<int:id>')
+@admin_blueprint.route('/player/<int:id>', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def player_side(id):
-    return render_template('admin/player_side.html')
+    oplayer = Player.query.get(id)
+    form = AssignSideForm()
+    populate_sides_field(form)
+    if form.validate_on_submit():
+        side = form.sides.data
+        oplayer.csid = side
+        db.session.commit()
+        #if end:
+            #ogame.finished = True
+            #db.session.commit()
+        flash('The side has been asigned')
+        return redirect(url_for('.game', id=oplayer.cgam))
+    return render_template('admin/player_side.html', player=oplayer, form=form)

@@ -3,26 +3,30 @@
 {% set active_page = 'admin.games' %}
 {% block principal %}
 <div class="page-header">
-    <h1>{{ game.name }} <small>{{ game.date }}</small></h1>
-  </div>
-  <div class="well">{{ game.desc }}</div>
-  {% for side in sides %}
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">{{ side }}</h3>
-        </div>
-        <div class="panel-body">
-            <ul>
-            {% for player in sides[side] %}
-            <li><a href="{{ url_for('admin.player_side', id=player.id)  }}">{{ player.name }}</a></li>
-            {% endfor %}
-            </ul>
-        </div>
+<h1>{{ game.name }} <small>{{ game.date }}</small></h1>
+</div>
+<div class="well">{{ game.desc }}</div>
+{% for side in sides %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">{{ side }}</h3>
     </div>
-    {% if not game.finished %}
-    <div class="well">
-        {{ wtf.quick_form(form) }}
+    <div class="panel-body">
+        <ul>
+        {% for player in sides[side] %}
+        {% if not game.finished %}
+        <li><a href="{{ url_for('admin.player_side', id=player.id)  }}">{{ player.plausr.name }}</a></li>
+        {% else %}
+        <li>{{ player.plausr.name }}</li>
+        {% endif %}
+        {% endfor %}
+        </ul>
     </div>
-    {% endif %}
-  {% endfor %}
+</div>
+{% endfor %}
+{% if not game.finished %}
+<div class="well">
+    {{ wtf.quick_form(form) }}
+</div>
+{% endif %}
 {% endblock %}
