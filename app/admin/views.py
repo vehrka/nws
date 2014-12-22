@@ -4,7 +4,7 @@ from .. import db
 from ..models import Game, Player, User
 from ..decorators import admin_required
 from . import admin_blueprint
-from .forms import GameForm
+from .forms import GameForm, EndGameForm
 
 
 class aPlayer():
@@ -55,12 +55,17 @@ def games():
     return render_template('admin/games.html', form=form, active_games=active_games, finished_games=finished_games)
 
 
-@admin_blueprint.route('/game/<int:id>')
+@admin_blueprint.route('/game/<int:id>', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def game(id):
     ogame = Game.query.get(id)
     oplayers = ogame.gameplay.all()
+    form = EndGameForm()
+    if form.validate_on_submit():
+        end = form.endme.data
+        flash('The game has been finished')
+        return redirect(url_for('.game', id=id))
     sides = {}
     for oplayer in oplayers:
         player = aPlayer()
@@ -69,12 +74,12 @@ def game(id):
         else:
             acro = 'Unassigned'
         player.name = oplayer.plausr.name
-        player.id = oplayer.cuse
+        player.id = oplayer.id
         if acro in sides.keys():
             sides[acro].append(player)
         else:
             sides[acro] = [player]
-    return render_template('admin/game.html', game=game, sides=sides)
+    return render_template('admin/game.html', form=form,  game=ogame, sides=sides)
 
 
 @admin_blueprint.route('/sides')
@@ -84,8 +89,8 @@ def sides():
     return render_template('admin/sides.html')
 
 
-@admin_blueprint.route('/players')
+@admin_blueprint.route('/player/<int:id>')
 @login_required
 @admin_required
-def players():
-    return render_template('admin/players.html')
+def player_side(id):
+    return render_template('admin/player_side.html')
