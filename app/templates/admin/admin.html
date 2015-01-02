@@ -1,7 +1,8 @@
 {% extends "base.html" %}
 {% set latbar1 = [(url_for('.admin') , 'admin.home', 'Admin'), 
+                  (url_for('.games'), 'admin.games', 'Games'),
                   (url_for('.users'), 'admin.users', 'Manage Users')] %}
-{% set latbar2 = [(url_for('.games'), 'admin.games', 'Games'),
+{% set latbar2 = [(url_for('.shptypes'), 'admin.shptypes', 'Ship Types'),
                   (url_for('.sides'), 'admin.sides', 'Sides')] %}
 {% set active_page = active_page|default('admin.home') %}
 {% block page_content %}

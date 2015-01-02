@@ -92,6 +92,13 @@ def sides():
     return render_template('admin/sides.html')
 
 
+@admin_blueprint.route('/shptypes')
+@login_required
+@admin_required
+def shptypes():
+    return render_template('admin/shptypes.html')
+
+
 @admin_blueprint.route('/player/<int:id>', methods=['GET', 'POST'])
 @login_required
 @admin_required

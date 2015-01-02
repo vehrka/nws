@@ -27,10 +27,20 @@ def upgrade():
     sa.Column('desc', sa.String(length=100), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
+    op.create_table('a_shptypes',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('acro', sa.String(length=50), nullable=True),
+    sa.Column('desc', sa.String(length=100), nullable=True),
+    sa.PrimaryKeyConstraint('id')
+    )
     op.create_table('a_shpclasses',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('acro', sa.String(length=15), nullable=True),
-    sa.Column('desc', sa.String(length=100), nullable=True),
+    sa.Column('acro', sa.String(length=50), nullable=True),
+    sa.Column('desc', sa.String(length=150), nullable=True),
+    sa.Column('oside', sa.Integer(), nullable=True),
+    sa.Column('ctype', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['oside'], ['a_sides.id'], ),
+    sa.ForeignKeyConstraint(['ctype'], ['a_shptypes.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('t_games',
