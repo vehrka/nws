@@ -1,0 +1,50 @@
+{% extends "admin/admin.html"%}
+{% import "bootstrap/wtf.html" as wtf %}
+{% set active_page = 'admin.shpclasses' %}
+{% block principal %}
+<div role="tabpanel">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#classes" aria-controls="classes" role="tab" data-toggle="tab">Classes</a>
+        </li>
+        <li role="presentation">
+            <a href="#nuevo" aria-controls="nuevo" role="tab" data-toggle="tab">New</a>
+        </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="classes">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Acronym</th>
+                        <th>Original Side</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for sclass in sclasses %}
+                <tr class='clickableRow' href=''>
+                        <td>{{ sclass.clatype.acro }}</td>
+                        <td>{{ sclass.desc }}</td>
+                        <td>{{ sclass.acro }}</td>
+                        <td>{{ sclass.claoside.acro }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="nuevo">
+        {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+    jQuery(document).ready(function($) { $(".clickableRow").click(function() { window.document.location = $(this).attr("href"); }); });
+</script>
+{% endblock %}

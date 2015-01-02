@@ -1,10 +1,10 @@
 from flask import flash, redirect, render_template, url_for
 from flask.ext.login import login_required
 from .. import db
-from ..models import Game, Player, Side, User
+from ..models import Game, Player, Side, User, ShpClass, ShpType
 from ..decorators import admin_required
 from . import admin_blueprint
-from .forms import AssignSideForm, GameForm, EndGameForm
+from .forms import AddClassForm, AddShipForm, AssignSideForm, GameForm, EndGameForm
 
 
 def populate_players_field(form):
@@ -15,10 +15,20 @@ def populate_players_field(form):
 
 
 def populate_sides_field(form):
-    """Populate the SelectField form the database
-    https://github.com/rawrgulmuffins/WTFormMultipleSelectTutorial/blob/master/multiple_select.py"""
     sides_choices = [(s.id, '{} {}'.format(s.acro, s.desc)) for s in Side.query.all()]
     form.sides.choices = sides_choices
+
+
+def populate_class_field(form, side=1):
+    sclass_choices = [(s.id, '{}, {}'.format(s.acro, s.claoside.acro)) for s in ShpClass.query.filter_by(oside=side).all()]
+    oclass_choices = [(s.id, '{}, {}'.format(s.acro, s.claoside.acro)) for s in ShpClass.query.filter(ShpClass.oside != side).all()]
+    class_choices = sclass_choices + oclass_choices
+    form.shpclass.choices = class_choices
+
+
+def populate_types_field(form):
+    types_choices = [(s.id, '{} {}'.format(s.acro, s.desc)) for s in ShpType.query.all()]
+    form.types.choices = types_choices
 
 
 @admin_blueprint.route('/')
@@ -99,15 +109,38 @@ def shptypes():
     return render_template('admin/shptypes.html')
 
 
+@admin_blueprint.route('/shpclasses', methods=['GET', 'POST'])
+@login_required
+@admin_required
+def shpclasses():
+    form = AddClassForm()
+    populate_types_field(form)
+    populate_sides_field(form)
+    sclasses = ShpClass.query.order_by(ShpClass.oside, ShpClass.ctype, ShpClass.acro).all()
+    if form.validate_on_submit():
+        name = form.name.data
+        ctype = form.types.data
+        oside = form.sides.data
+        acro = form.acro.data
+        shpclass = ShpClass(acro=acro, desc=name, oside=oside, ctype=ctype)
+        db.session.add(shpclass)
+        db.session.commit()
+        flash('The class has been added')
+        return redirect(url_for('.shpclasses'))
+    return render_template('admin/shpclasses.html', sclasses=sclasses, form=form)
+
+
 @admin_blueprint.route('/player/<int:id>', methods=['GET', 'POST'])
 @login_required
 @admin_required
-def player_side(id):
+def player(id):
     oplayer = Player.query.get(id)
-    form = AssignSideForm()
-    populate_sides_field(form)
-    if form.validate_on_submit():
-        side = form.sides.data
+    sideform = AssignSideForm()
+    populate_sides_field(sideform)
+    addshipform = AddShipForm()
+    populate_class_field(addshipform, oplayer.csid)
+    if sideform.validate_on_submit():
+        side = sideform.sides.data
         oplayer.csid = side
         db.session.commit()
         #if end:
@@ -115,4 +148,4 @@ def player_side(id):
             #db.session.commit()
         flash('The side has been asigned')
         return redirect(url_for('.game', id=oplayer.cgam))
-    return render_template('admin/player_side.html', player=oplayer, form=form)
+    return render_template('admin/player.html', player=oplayer, sideform=sideform, addshipform=addshipform)

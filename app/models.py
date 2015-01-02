@@ -103,8 +103,10 @@ class ShpClass(db.Model):
     oside = db.Column(db.Integer, db.ForeignKey('a_sides.id'))
     ctype = db.Column(db.Integer, db.ForeignKey('a_shptypes.id'))
 
+    claoside = db.relationship('Side', backref='a_shpclasses')
     clacoun = db.relationship('Counter', backref='a_shpclasses')
     clahcoun = db.relationship('HCounter', backref='a_shpclasses')
+    clatype = db.relationship('ShpType', backref='a_shpclasses')
 
     def __repr__(self):
         return '<Counter Class {}>'.format(self.desc)
@@ -123,8 +125,8 @@ class Counter(db.Model):
     lat = db.Column(db.Integer)
     lon = db.Column(db.Integer)
 
-    counform = db.relationship('Formation', backref='t_formations')
-    counhist = db.relationship('HCounter', backref='t_h_counter')
+    counform = db.relationship('Formation', backref='t_counters')
+    counhist = db.relationship('HCounter', backref='t_counters')
 
     def __repr__(self):
         return '<Counter {}>'.format(self.name)
@@ -136,6 +138,9 @@ class Formation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cplay = db.Column(db.Integer, db.ForeignKey('t_players.id'))
     ccou = db.Column(db.Integer, db.ForeignKey('t_counters.id'))
+
+    formplay = db.relationship('Player', backref='t_formations')
+    formcoun = db.relationship('Counter', backref='t_formations')
 
 
 class HCounter(db.Model):
@@ -178,6 +183,8 @@ class Player(db.Model):
 
     plausr = db.relationship('User', backref='t_players')
     plasid = db.relationship('Side', backref='t_players')
+    plagam = db.relationship('Game', backref='t_players')
+    plafor = db.relationship('Formation', backref='t_players')
 
 
 class Approle(db.Model):
