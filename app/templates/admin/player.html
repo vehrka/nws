@@ -12,9 +12,11 @@
     </div>
     <div id="collapseShip" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingShip">
         <div class="panel-body">
+            <ul>
             {% for formation in player.plafor %}
-            {{ formation.formcoun.name }}
+                <li>{{ formation.formcoun.name }} - {{ formation.formcoun.counclas.acro }}</li>
             {% endfor %}
+            </ul>
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#AddShipModal">
                 Add Ship
@@ -33,7 +35,6 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,46 @@
 {% extends "admin/admin.html"%}
+{% import "bootstrap/wtf.html" as wtf %}
 {% set active_page = 'admin.shptypes' %}
 {% block principal %}
-For ship types
+<div role="tabpanel">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#types" aria-controls="types" role="tab" data-toggle="tab">Types</a>
+        </li>
+        <li role="presentation">
+            <a href="#nuevo" aria-controls="nuevo" role="tab" data-toggle="tab">New</a>
+        </li>
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="types">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Acronym</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for stype in stypes %}
+                <tr class='clickableRow' href=''>
+                        <td>{{ stype.desc }}</td>
+                        <td>{{ stype.acro }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="nuevo">
+        {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script>
+    jQuery(document).ready(function($) { $(".clickableRow").click(function() { window.document.location = $(this).attr("href"); }); });
+</script>
 {% endblock %}

@@ -5,7 +5,7 @@ from wtforms.validators import Length, Required
 
 class AddClassForm(Form):
     types = SelectField('Type', validators=[Required()], coerce=int)
-    sides =  SelectField('Original Side', validators=[Required()], coerce=int)
+    sides = SelectField('Original Side', validators=[Required()], coerce=int)
     name = StringField('Name', validators=[Required(), Length(0, 150)])
     acro = StringField('Acronim', validators=[Required(), Length(0, 50)])
     submit = SubmitField('Submit')
@@ -13,12 +13,19 @@ class AddClassForm(Form):
 
 class AddShipForm(Form):
     shpclass = SelectField('Class', validators=[Required()], coerce=int)
-    name = StringField('Name', validators=[Required(), Length(0,100)])
+    name = StringField('Name', validators=[Required(), Length(0, 100)])
     bearing = IntegerField('Bearing')
     speed = IntegerField('Speed')
     height = IntegerField('Height')
     lat = IntegerField('Latitude')
     lon = IntegerField('Longitude')
+    submit = SubmitField('Submit')
+
+
+class AddTypeForm(Form):
+    name = StringField('Name', validators=[Required(), Length(0, 100)])
+    acro = StringField('Acronim', validators=[Required(), Length(0, 15)])
+    submit = SubmitField('Submit')
 
 
 class AssignSideForm(Form):

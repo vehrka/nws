@@ -125,6 +125,7 @@ class Counter(db.Model):
     lat = db.Column(db.Integer)
     lon = db.Column(db.Integer)
 
+    counclas = db.relationship('ShpClass', backref='t_counters')
     counform = db.relationship('Formation', backref='t_counters')
     counhist = db.relationship('HCounter', backref='t_counters')
 
