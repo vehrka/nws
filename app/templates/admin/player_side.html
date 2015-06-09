@@ -1,0 +1,13 @@
+{% extends "admin/admin.html"%}
+{% import "bootstrap/wtf.html" as wtf %}
+{% set active_page = 'admin.games' %}
+{% block principal %}
+{% if  player.csid %}
+<div class="page-header">
+<h1>Current side: <small>{{ player.plasid.desc }}</small></h1>
+</div>
+{% endif %}
+<div class="well">
+    {{ wtf.quick_form(form) }}
+</div>
+{% endblock %}

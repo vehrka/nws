@@ -47,66 +47,49 @@ class RArousr(db.Model):
     cuse = db.Column(db.Integer, db.ForeignKey('t_users.id'))
 
 
-class ShpType(db.Model):
-    __tablename__ = 'a_shptypes'
-
-    id = db.Column(db.Integer, primary_key=True)
-    acro = db.Column(db.String(15))
-    desc = db.Column(db.String(100))
-
-    typcla = db.relationship('ShpClass', backref='a_shptypes')
-
-    @staticmethod
-    def insert_classes():
-        types = {'CV': (1, 'Aircraft Carrier'),
-                 'CVE': (2, 'Escort Aircraft Carrier'),
-                 'CVL': (3, 'Light Aircraft Carrier'),
-                 'BB': (4, 'Battleship'),
-                 'BC': (5, 'Battle Cruiser'),
-                 'CA': (6, 'Heavy Cruiser'),
-                 'CL': (7, 'Light Cruiser'),
-                 'DD': (8, 'Destroyer'),
-                 'DE': (9, 'Destroyer Escort'),
-                 'DL': (10, 'Destroyer Leader'),
-                 'SS': (11, 'Submarine'),
-                 'SSC': (12, 'Coastal Submarine'),
-                 'AE': (13, 'Ammunition Ship'),
-                 'AF': (14, 'Store Ship'),
-                 'AFS': (15, 'Combat Store Ship'),
-                 'AO': (16, 'Oiler'),
-                 'APD': (17, 'Destroyer Transport'),
-                 'DMS': (18, 'Destroyer Minesweeper'),
-                 'MSO': (19, 'Minesweeper'),
-                 'ML': (20, 'Minelayer'),
-                 'PG': (21, 'Gunboat'),
-                 'PB': (22, 'Patrol Boat'),
-                 'PT': (23, 'Patrol Torpedo')}
-        for c in types:
-            atype = ShpType.query.filter_by(acro=c).first()
-            if atype is None:
-                atype = ShpType(acro=c)
-                atype.id = types[c][0]
-            atype.desc = types[c][1]
-            db.session.add(atype)
-        db.session.commit()
-
-    def __repr__(self):
-        return '<Ship Type {}>'.format(self.desc)
-
-
 class ShpClass(db.Model):
     __tablename__ = 'a_shpclasses'
 
     id = db.Column(db.Integer, primary_key=True)
     acro = db.Column(db.String(15))
     desc = db.Column(db.String(100))
-    oside = db.Column(db.Integer, db.ForeignKey('a_sides.id'))
-    ctype = db.Column(db.Integer, db.ForeignKey('a_shptypes.id'))
 
-    claoside = db.relationship('Side', backref='a_shpclasses')
     clacoun = db.relationship('Counter', backref='a_shpclasses')
     clahcoun = db.relationship('HCounter', backref='a_shpclasses')
-    clatype = db.relationship('ShpType', backref='a_shpclasses')
+
+    @staticmethod
+    def insert_classes():
+        classes = {'CV': (1, 'Aircraft Carrier'),
+                   'CVE': (2, 'Escort Aircraft Carrier'),
+                   'CVL': (3, 'Light Aircraft Carrier'),
+                   'BB': (4, 'Battleship'),
+                   'BC': (5, 'Battle Cruiser'),
+                   'CA': (6, 'Heavy Cruiser'),
+                   'CL': (7, 'Light Cruiser'),
+                   'DD': (8, 'Destroyer'),
+                   'DE': (9, 'Destroyer Escort'),
+                   'DL': (10, 'Destroyer Leader'),
+                   'SS': (11, 'Submarine'),
+                   'SSC': (12, 'Coastal Submarine'),
+                   'AE': (13, 'Ammunition Ship'),
+                   'AF': (14, 'Store Ship'),
+                   'AFS': (15, 'Combat Store Ship'),
+                   'AO': (16, 'Oiler'),
+                   'APD': (17, 'Destroyer Transport'),
+                   'DMS': (18, 'Destroyer Minesweeper'),
+                   'MSO': (19, 'Minesweeper'),
+                   'ML': (20, 'Minelayer'),
+                   'PG': (21, 'Gunboat'),
+                   'PB': (22, 'Patrol Boat'),
+                   'PT': (23, 'Patrol Torpedo')}
+        for c in classes:
+            aclass = ShpClass.query.filter_by(acro=c).first()
+            if aclass is None:
+                aclass = ShpClass(acro=c)
+                aclass.id = classes[c][0]
+            aclass.desc = classes[c][1]
+            db.session.add(aclass)
+        db.session.commit()
 
     def __repr__(self):
         return '<Counter Class {}>'.format(self.desc)
@@ -125,9 +108,8 @@ class Counter(db.Model):
     lat = db.Column(db.Integer)
     lon = db.Column(db.Integer)
 
-    counclas = db.relationship('ShpClass', backref='t_counters')
-    counform = db.relationship('Formation', backref='t_counters')
-    counhist = db.relationship('HCounter', backref='t_counters')
+    counform = db.relationship('Formation', backref='t_formations')
+    counhist = db.relationship('HCounter', backref='t_h_counter')
 
     def __repr__(self):
         return '<Counter {}>'.format(self.name)
@@ -139,9 +121,6 @@ class Formation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cplay = db.Column(db.Integer, db.ForeignKey('t_players.id'))
     ccou = db.Column(db.Integer, db.ForeignKey('t_counters.id'))
-
-    formplay = db.relationship('Player', backref='t_formations')
-    formcoun = db.relationship('Counter', backref='t_formations')
 
 
 class HCounter(db.Model):
@@ -184,8 +163,6 @@ class Player(db.Model):
 
     plausr = db.relationship('User', backref='t_players')
     plasid = db.relationship('Side', backref='t_players')
-    plagam = db.relationship('Game', backref='t_players')
-    plafor = db.relationship('Formation', backref='t_players')
 
 
 class Approle(db.Model):

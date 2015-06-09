@@ -22,7 +22,6 @@
     "tests"
   ],
   "dependencies": {
-    "bootswatch": "v3.3.1+2",
-    "ol3-unofficial": "~3.0.3"
+    "bootswatch": "v3.3.1+2"
   }
 }
