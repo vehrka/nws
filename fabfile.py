@@ -16,48 +16,52 @@ def test():
 @task
 def rundev():
     """Sets the dev environment and launches the app"""
-    confpth = os.path.join(DIR, 'config/dev.cfg')
-    with prefix('export FLASK_CONFIG=development'):
-        apprun(confpth)
-
-
-@task
-def runprod():
-    """Sets the production environment and launches the app"""
-    confpth = os.path.join(DIR, 'config/prod.cfg')
-    with prefix('export FLASK_CONFIG=production'):
-        apprun(confpth)
+    exportcfg = os.path.join(DIR, 'EXPORTME.cfg')
+    with prefix('export APP_CONFIG={}'.format(exportcfg)):
+        apprun()
 
 
 @task
 def shelldev():
     """Sets the dev environment and launches the shell"""
-    confpth = os.path.join(DIR, 'config/dev.cfg')
-    with prefix('export FLASK_CONFIG=development'):
+    exportcfg = os.path.join(DIR, 'EXPORTME.cfg')
+    with prefix('export APP_CONFIG={}'.format(exportcfg)):
         shellrun(confpth)
 
 
 @task
 def dbcmm(cmmd):
     """Sets the dev environment and gives the command to Migrate"""
-    confpth = os.path.join(DIR, 'config/dev.cfg')
-    with prefix('export FLASK_CONFIG=development'):
-        dbrun(confpth, cmmd)
+    exportcfg = os.path.join(DIR, 'EXPORTME.cfg')
+    with prefix('export APP_CONFIG={}'.format(exportcfg)):
+        dbrun(cmmd)
 
 
-def apprun(confpth):
-    with prefix('export SNWSETTINGS={0}'.format(confpth)):
-        local('python manage.py runserver')
+@task
+def initdb():
+    """Sets the dev environment and launches the shell"""
+    exportcfg = os.path.join(DIR, 'EXPORTME.cfg')
+    with prefix('export APP_CONFIG={}'.format(exportcfg)):
+        dbinit()
 
 
-def shellrun(confpth):
-    with prefix('export SNWSETTINGS={0}'.format(confpth)):
-        local('python manage.py shell')
+def apprun():
+    local('python manage.py runserver')
 
 
-def dbrun(confpth, cmnd):
-    with prefix('export SNWSETTINGS={0}'.format(confpth)):
-        local('python manage.py db {}'.format(cmnd))
+def shellrun():
+    local('python manage.py shell')
+
+
+def dbrun(cmnd):
+    local('python manage.py db {}'.format(cmnd))
+
+
+def dbinit():
+    local('python manage.py db init')
+    local('python manage.py db migrate')
+    local('python manage.py db upgrade')
+    local('python manage.py seed')
 
 
 @task
